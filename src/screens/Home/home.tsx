@@ -1,7 +1,11 @@
+import { InputMask } from '@react-input/mask'
+
 import { Button } from '../../components/Button'
+import { ButtonIcon } from '../../components/ButtonIcon'
+import { Input } from '../../components/Input'
 import { Logo } from '../../components/Logo'
 import { Title } from '../../components/Title'
-import { Header, Main, Section, Filters } from './style'
+import { Header, Main, Section, Filters, InputGroup } from './styles'
 
 export function Home() {
   return (
@@ -15,8 +19,28 @@ export function Home() {
       </Header>
       <Main>
         <Section>
-          <Title title="Saldo" subtitle="Receitas e despesas no período" />
-          <Filters></Filters>
+          <Filters>
+            <Title title="Saldo" subtitle="Receitas e despesas no período" />
+            <InputGroup>
+              <InputMask
+                component={Input}
+                mask="dd/mm/aaaa"
+                replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                variant="dark"
+                label="Início"
+                placeholder="dd/mm/aaaa"
+              />
+              <InputMask
+                component={Input}
+                mask="dd/mm/aaaa"
+                replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                variant="dark"
+                label="Fim"
+                placeholder="dd/mm/aaaa"
+              />
+              <ButtonIcon />
+            </InputGroup>
+          </Filters>
         </Section>
       </Main>
     </>
