@@ -11,7 +11,7 @@ export const Container = styled.button<ContainerProps>`
   align-items: center;
   justify-content: center;
   height: 2.25rem;
-  border-radius: 0%.25rem;
+  border-radius: 0.25rem;
   background-color: ${(props) =>
     props.$variant === 'default' ? theme.colors.primary : 'transparent'};
   color: ${(props) =>
