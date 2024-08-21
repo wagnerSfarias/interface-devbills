@@ -2,10 +2,25 @@ import { InputMask } from '@react-input/mask'
 
 import { Button } from '../../components/Button'
 import { ButtonIcon } from '../../components/ButtonIcon'
+import { Card } from '../../components/Card'
 import { Input } from '../../components/Input'
 import { Logo } from '../../components/Logo'
 import { Title } from '../../components/Title'
-import { Header, Main, Section, Filters, InputGroup } from './styles'
+import { Transaction } from '../../components/Transaction'
+import {
+  Header,
+  Main,
+  Section,
+  Filters,
+  InputGroup,
+  Balance,
+  ChartContainer,
+  ChartContent,
+  ChartActions,
+  Aside,
+  SearchTransaction,
+  TransactionGroup,
+} from './styles'
 
 export function Home() {
   return (
@@ -41,7 +56,67 @@ export function Home() {
               <ButtonIcon />
             </InputGroup>
           </Filters>
+          <Balance>
+            <Card title="Saldo" amount={1000000} />
+            <Card title="Receitas" amount={1000000} variant="incomes" />
+            <Card title="Gastos" amount={1000000} variant="expenses" />
+          </Balance>
+
+          <ChartContainer>
+            <header>
+              <Title
+                title="Gastos"
+                subtitle="Despesas por categoria no período"
+              />
+            </header>
+            <ChartContent></ChartContent>
+          </ChartContainer>
+          <ChartContainer>
+            <header>
+              <Title
+                title="Evolução Financeira"
+                subtitle="Saldo, Receitas e Gastos ao ano"
+              />
+              <ChartActions>
+                <InputMask
+                  component={Input}
+                  mask="aaaa"
+                  replacement={{ a: /\d/ }}
+                  variant="black"
+                  label="Ano"
+                  placeholder="aaaa"
+                />
+                <ButtonIcon />
+              </ChartActions>
+            </header>
+            <ChartContent></ChartContent>
+          </ChartContainer>
         </Section>
+        <Aside>
+          <header>
+            <Title title="Transações" subtitle="Receitas e Gastos no período" />
+            <SearchTransaction>
+              <Input variant="black" placeholder="Procurar transação..." />
+              <ButtonIcon />
+            </SearchTransaction>
+          </header>
+          <TransactionGroup>
+            <Transaction
+              id={1}
+              amount={20000}
+              date="01/12/2023"
+              category={{ title: 'Alimentação', color: '#ff33bb' }}
+              title="Mercado"
+            />
+            <Transaction
+              id={2}
+              amount={20000}
+              date="01/12/2023"
+              category={{ title: 'Alimentação', color: '#ff33bb' }}
+              title="Mercado"
+            />
+          </TransactionGroup>
+        </Aside>
       </Main>
     </>
   )
