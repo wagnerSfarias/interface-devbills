@@ -1,8 +1,9 @@
 import { InputMask } from '@react-input/mask'
 
-import { Button } from '../../components/Button'
 import { ButtonIcon } from '../../components/ButtonIcon'
 import { Card } from '../../components/Card'
+import { CreateCategoryDialog } from '../../components/CreateCategoryDialog'
+import { CreateTransactionDialog } from '../../components/CreateTransactionDialog'
 import { Input } from '../../components/Input'
 import { Logo } from '../../components/Logo'
 import { Title } from '../../components/Title'
@@ -28,8 +29,8 @@ export function Home() {
       <Header>
         <Logo />
         <div>
-          <Button>Nova Transação</Button>
-          <Button>Nova Categoria</Button>
+          <CreateTransactionDialog />
+          <CreateCategoryDialog />
         </div>
       </Header>
       <Main>
