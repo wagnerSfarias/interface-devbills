@@ -63,6 +63,7 @@ export const ChartContainer = styled.div`
 `
 export const ChartContent = styled.div`
   height: 14.5rem;
+  margin-top: 0.625rem;
 `
 export const ChartActions = styled.div`
   display: flex;

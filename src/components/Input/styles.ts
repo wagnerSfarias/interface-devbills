@@ -8,12 +8,12 @@ type ContainerProps = {
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: 0.313rem;
   width: 100%;
 
   label {
     color: ${theme.colors.white};
-    font-size: 0.625rem;
+    font-size: 0.875rem;
   }
 
   input {
