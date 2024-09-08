@@ -36,4 +36,11 @@ export const Container = styled.div<ContainerProps>`
       color: ${theme.colors.neutral};
     }
   }
+
+  span {
+    margin-top: 0.125rem;
+    font-size: 0.825rem;
+    line-height: 80%;
+    color: ${theme.colors.error};
+  }
 `
