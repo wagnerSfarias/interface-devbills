@@ -20,6 +20,11 @@ export const Container = styled.div`
     gap: 0.75rem;
   }
 `
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`
 
 export const InputGroup = styled.div`
   display: flex;
@@ -87,4 +92,11 @@ export const RadioGroup = styled.div`
     color: ${theme.colors.white};
     font-size: 0.875rem;
   }
+`
+
+export const ErrorMessage = styled.span`
+  margin-top: 0.125rem;
+  font-size: 0.825rem;
+  line-height: 80%;
+  color: ${theme.colors.error};
 `
