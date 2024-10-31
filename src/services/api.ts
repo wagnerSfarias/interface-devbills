@@ -5,6 +5,7 @@ import {
   CreateCategory,
   CreateTransaction,
   Transaction,
+  TransactionsFilter,
 } from './api-types'
 
 export class APIService {
@@ -19,6 +20,27 @@ export class APIService {
       '/transactions',
       createTransactionData,
     )
+    return data
+  }
+
+  static async getTransactions({
+    title,
+    categoryId,
+    beginDate,
+    endDate,
+  }: TransactionsFilter): Promise<Transaction[]> {
+    const { data } = await APIService.client.get<Transaction[]>(
+      '/transactions',
+      {
+        params: {
+          ...(title?.length && { title }),
+          ...(categoryId?.length && { categoryId }),
+          beginDate,
+          endDate,
+        },
+      },
+    )
+
     return data
   }
 
