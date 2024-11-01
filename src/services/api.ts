@@ -6,6 +6,8 @@ import {
   CreateTransaction,
   Transaction,
   TransactionsFilter,
+  Dashboard,
+  DashboardFilters,
 } from './api-types'
 
 export class APIService {
@@ -35,6 +37,23 @@ export class APIService {
         params: {
           ...(title?.length && { title }),
           ...(categoryId?.length && { categoryId }),
+          beginDate,
+          endDate,
+        },
+      },
+    )
+
+    return data
+  }
+
+  static async getDashboard({
+    beginDate,
+    endDate,
+  }: DashboardFilters): Promise<Dashboard> {
+    const { data } = await APIService.client.get<Dashboard>(
+      '/transactions/dashboard',
+      {
+        params: {
           beginDate,
           endDate,
         },

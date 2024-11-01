@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { X } from '@phosphor-icons/react'
 import { InputMask } from '@react-input/mask'
 import dayjs from 'dayjs'
 import { useCallback, useEffect, useState } from 'react'
@@ -33,6 +34,7 @@ import {
   Aside,
   SearchTransaction,
   TransactionGroup,
+  CategoryBadge,
 } from './styles'
 
 export function Home() {
@@ -49,11 +51,15 @@ export function Home() {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryProps | null>(null)
 
-  const { transactions, fetchTransactions } = useFetchAPI()
+  const { transactions, fetchTransactions, dashboard, fetchDashboard } =
+    useFetchAPI()
 
   useEffect(() => {
+    const { beginDate, endDate } = transactionsFilterForm.getValues()
+
+    fetchDashboard({ beginDate, endDate })
     fetchTransactions(transactionsFilterForm.getValues())
-  }, [fetchTransactions, transactionsFilterForm])
+  }, [fetchTransactions, transactionsFilterForm, fetchDashboard])
 
   const handleSelectCategory = useCallback(
     async ({ id, title, color }: CategoryProps) => {
@@ -77,6 +83,15 @@ export function Home() {
       await fetchTransactions(data)
     },
     [fetchTransactions],
+  )
+  const onSubmitDashboard = useCallback(
+    async (data: TransactionsFilterData) => {
+      const { beginDate, endDate } = data
+
+      await fetchDashboard({ beginDate, endDate })
+      await fetchTransactions(data)
+    },
+    [fetchDashboard, fetchTransactions],
   )
 
   return (
@@ -116,16 +131,22 @@ export function Home() {
                 {...transactionsFilterForm.register('endDate')}
               />
               <ButtonIcon
-                onClick={transactionsFilterForm.handleSubmit(
-                  onSubmitTransactions,
-                )}
+                onClick={transactionsFilterForm.handleSubmit(onSubmitDashboard)}
               />
             </InputGroup>
           </Filters>
           <Balance>
-            <Card title="Saldo" amount={1000000} />
-            <Card title="Receitas" amount={1000000} variant="incomes" />
-            <Card title="Gastos" amount={1000000} variant="expenses" />
+            <Card title="Saldo" amount={dashboard?.balance?.balance || 0} />
+            <Card
+              title="Receitas"
+              amount={dashboard?.balance?.incomes || 0}
+              variant="incomes"
+            />
+            <Card
+              title="Gastos"
+              amount={dashboard?.balance?.expenses * -1 || 0}
+              variant="expenses"
+            />
           </Balance>
 
           <ChartContainer>
@@ -134,9 +155,21 @@ export function Home() {
                 title="Gastos"
                 subtitle="Despesas por categoria no período"
               />
+              {selectedCategory && (
+                <CategoryBadge
+                  $color={selectedCategory.color}
+                  onClick={handleDeselectCategory}
+                >
+                  <X />
+                  {selectedCategory.title}
+                </CategoryBadge>
+              )}
             </header>
             <ChartContent>
-              <CategoriesPieChart onClick={handleSelectCategory} />
+              <CategoriesPieChart
+                expenses={dashboard.expenses}
+                onClick={handleSelectCategory}
+              />
             </ChartContent>
           </ChartContainer>
           <ChartContainer>
