@@ -20,7 +20,10 @@ import { Title } from '../../components/Title'
 import { Transaction } from '../../components/Transaction'
 import { useFetchAPI } from '../../hooks/useFetchAPI'
 import { transactionsFilterSchema } from '../../validators/schemas'
-import { TransactionsFilterData } from '../../validators/types'
+import {
+  FinancialEvolutionFilterData,
+  TransactionsFilterData,
+} from '../../validators/types'
 import {
   Header,
   Main,
@@ -38,6 +41,12 @@ import {
 } from './styles'
 
 export function Home() {
+  const financialEvolutionFilterForm = useForm<FinancialEvolutionFilterData>({
+    defaultValues: {
+      year: dayjs().get('year').toString(),
+    },
+  })
+
   const transactionsFilterForm = useForm<TransactionsFilterData>({
     defaultValues: {
       title: '',
@@ -51,15 +60,28 @@ export function Home() {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryProps | null>(null)
 
-  const { transactions, fetchTransactions, dashboard, fetchDashboard } =
-    useFetchAPI()
+  const {
+    transactions,
+    fetchTransactions,
+    dashboard,
+    fetchDashboard,
+    financialEvolution,
+    fetchFinancialEvolution,
+  } = useFetchAPI()
 
   useEffect(() => {
     const { beginDate, endDate } = transactionsFilterForm.getValues()
 
     fetchDashboard({ beginDate, endDate })
     fetchTransactions(transactionsFilterForm.getValues())
-  }, [fetchTransactions, transactionsFilterForm, fetchDashboard])
+    fetchFinancialEvolution(financialEvolutionFilterForm.getValues())
+  }, [
+    fetchTransactions,
+    transactionsFilterForm,
+    fetchDashboard,
+    fetchFinancialEvolution,
+    financialEvolutionFilterForm,
+  ])
 
   const handleSelectCategory = useCallback(
     async ({ id, title, color }: CategoryProps) => {
@@ -92,6 +114,13 @@ export function Home() {
       await fetchTransactions(data)
     },
     [fetchDashboard, fetchTransactions],
+  )
+
+  const onSubmitFinancialEvolution = useCallback(
+    async (data: FinancialEvolutionFilterData) => {
+      await fetchFinancialEvolution(data)
+    },
+    [fetchFinancialEvolution],
   )
 
   return (
@@ -130,6 +159,7 @@ export function Home() {
                 error={transactionsFilterForm.formState.errors.endDate?.message}
                 {...transactionsFilterForm.register('endDate')}
               />
+              {/* <ButtonIcon onClick={teste} /> */}
               <ButtonIcon
                 onClick={transactionsFilterForm.handleSubmit(onSubmitDashboard)}
               />
@@ -186,12 +216,19 @@ export function Home() {
                   variant="black"
                   label="Ano"
                   placeholder="aaaa"
+                  {...financialEvolutionFilterForm.register('year')}
                 />
-                <ButtonIcon />
+                <ButtonIcon
+                  onClick={financialEvolutionFilterForm.handleSubmit(
+                    onSubmitFinancialEvolution,
+                  )}
+                />
               </ChartActions>
             </header>
             <ChartContent>
-              <FinancialEvolutionBarChart />
+              <FinancialEvolutionBarChart
+                financialEvolution={financialEvolution}
+              />
             </ChartContent>
           </ChartContainer>
         </Section>
@@ -204,6 +241,7 @@ export function Home() {
                 placeholder="Procurar transação..."
                 {...transactionsFilterForm.register('title')}
               />
+
               <ButtonIcon
                 onClick={transactionsFilterForm.handleSubmit(
                   onSubmitTransactions,
