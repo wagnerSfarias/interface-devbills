@@ -16,17 +16,19 @@ export function CreateCategoryDialog() {
   const { createCategory, fetchCategories } = useFetchAPI()
   const [open, setOpen] = useState(false)
 
-  const { register, handleSubmit, formState } = useForm<CreateCategoryData>({
-    defaultValues: {
-      title: '',
-      color: theme.colors.primary,
-    },
-    resolver: zodResolver(createCategorySchema),
-  })
+  const { register, resetField, handleSubmit, formState } =
+    useForm<CreateCategoryData>({
+      defaultValues: {
+        title: '',
+        color: theme.colors.primary,
+      },
+      resolver: zodResolver(createCategorySchema),
+    })
 
   const handleClose = useCallback(() => {
+    resetField('title')
     setOpen(false)
-  }, [])
+  }, [resetField])
 
   const onSubmit = useCallback(
     async (data: CreateCategoryData) => {
