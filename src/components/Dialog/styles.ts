@@ -23,6 +23,10 @@ export const Overlay = styled(Dialog.Overlay)`
     }
   }
 `
+export const Title = styled(Dialog.Title)``
+
+export const Description = styled(Dialog.Description)``
+
 export const Content = styled(Dialog.Content)`
   background-color: ${theme.colors.dark};
   border-radius: 0.5rem;
